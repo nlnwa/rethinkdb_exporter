@@ -21,13 +21,23 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- if .Values.rethinkdb_exporter.db.secretName }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.rethinkdb_exporter.db.secretName }}
+                optional: false
+        {{- else }}
+          env:
+            - name: DB_PASSWORD
+              value: {{ .Values.rethinkdb_exporter.db.password | quote }}
+        {{- end }}
           args: [
-            "--db.addr={{ .Values.rethinkdb_exporter.dbaddr }}",
-            "--db.auth={{ .Values.rethinkdb_exporter.dbauth }}",
-            "--db.user={{ .Values.rethinkdb_exporter.dbuser }}",
-            "--db.pass={{ .Values.rethinkdb_exporter.dbpass }}",
+            "--db.addr={{ .Values.rethinkdb_exporter.db.addr }}",
+            "--db.auth={{ .Values.rethinkdb_exporter.db.auth }}",
+            "--db.user={{ .Values.rethinkdb_exporter.db.user }}",
+            "--db.pass=$(DB_PASSWORD)",
             "--db.count-rows={{ .Values.rethinkdb_exporter.count_rows }}",
             "--clustername={{ .Values.rethinkdb_exporter.clustername }}"
           ]
