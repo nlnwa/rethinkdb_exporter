@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	r "github.com/GoRethink/gorethink"
+	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
