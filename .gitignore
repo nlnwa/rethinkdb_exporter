@@ -3,3 +3,6 @@ rethinkdb_exporter
 
 # Sublimetext projects
 *.sublime-*
+
+# IDEA
+.idea/

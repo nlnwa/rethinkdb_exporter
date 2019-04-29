@@ -5,13 +5,19 @@
 replicaCount: 1
 
 image:
-  repository: oliver006/rethinkdb_exporter
-  tag: latest
-  pullPolicy: Always
+  repository: norsknettarkiv/rethinkdb_exporter
+  tag: ""
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
 
 service:
   type: ClusterIP
   port: 9123
+  labels: {}
+  annotations: {}
+    # prometheus.io/scrape: 'true'
 
 resources: {}
   # limits:
@@ -28,9 +34,11 @@ tolerations: []
 affinity: {}
 
 rethinkdb_exporter:
-  dbaddr: rethinkdb-a-rethinkdb-cluster-0.rethinkdb-a-rethinkdb-cluster:28015,rethinkdb-a-rethinkdb-cluster-1.rethinkdb-a-rethinkdb-cluster:28015,rethinkdb-a-rethinkdb-cluster-2.rethinkdb-a-rethinkdb-cluster:28015
-  dbauth: 
-  dbuser: admin
-  dbpass: 
+  db:
+    addr: rethinkdb-a-rethinkdb-cluster-0.rethinkdb-a-rethinkdb-cluster:28015,rethinkdb-a-rethinkdb-cluster-1.rethinkdb-a-rethinkdb-cluster:28015,rethinkdb-a-rethinkdb-cluster-2.rethinkdb-a-rethinkdb-cluster:28015
+    auth: ""
+    user: admin
+    password: ""
+    secretName: ""
   clustername: rethinkdb
   count_rows: true

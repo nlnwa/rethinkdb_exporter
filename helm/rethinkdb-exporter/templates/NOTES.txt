@@ -2,4 +2,4 @@
       export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "rethinkdb_exporter.name" . }}" -o jsonpath="{.items[0].metadata.name}")
       kubectl port-forward $POD_NAME {{ .Values.service.port }}
 
-2.  Service is annotated with `prometheus.io/scrape: 'true'`.  Prometheus should pick it up for scraping automatically.
+2.  Service can be annotated with `prometheus.io/scrape: 'true'` and then prometheus should pick it up for scraping automatically.

@@ -1,14 +1,23 @@
-FROM alpine:latest
-MAINTAINER Oliver <o@21zoo.com>
+FROM golang:alpine as builder
 
-ENV GOPATH /go
-COPY . /go/src/github.com/oliver006/rethinkdb_exporter
+ENV GO111MODULE=on
 
-RUN apk add --update -t build-deps go git mercurial make \
-    && apk add -u musl musl-dev && rm -rf /var/cache/apk/* \
-    && cd /go/src/github.com/oliver006/rethinkdb_exporter \
-    && go get && go build && cp rethinkdb_exporter /bin/rethinkdb_exporter \
-    && rm -rf /go && apk del --purge build-deps
+RUN apk add --no-cache --update git
+
+COPY go.mod go.sum /go/src/github.com/nlnwa/rethinkdb_exporter/
+
+RUN cd src/github.com/nlnwa/rethinkdb_exporter && go mod download
+
+COPY . ./src/github.com/nlnwa/rethinkdb_exporter
+
+RUN cd src/github.com/nlnwa/rethinkdb_exporter && CGO_ENABLED=0 GOOS=linux go build
+
+
+FROM scratch
+
+LABEL maintaner="Marius André Elsfjordstrand Beck <marius.beck@nb.no>"
+
+COPY --from=builder /go/src/github.com/nlnwa/rethinkdb_exporter/rethinkdb_exporter /
 
 EXPOSE     9123
-ENTRYPOINT [ "/bin/rethinkdb_exporter" ]
+ENTRYPOINT [ "/rethinkdb_exporter" ]

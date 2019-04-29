@@ -1,5 +1,4 @@
 # RethinkDB Prometheus Metrics Exporter
-[![Circle CI](https://circleci.com/gh/oliver006/rethinkdb_exporter.svg?style=shield)](https://circleci.com/gh/oliver006/rethinkdb_exporter) [![Coverage Status](https://coveralls.io/repos/github/oliver006/rethinkdb_exporter/badge.svg?branch=master)](https://coveralls.io/github/oliver006/rethinkdb_exporter?branch=master)
 
 Prometheus exporter for RethinkDB cluster, server and table metrics.<br>
 Supports RethinkDB 2.x
@@ -9,7 +8,7 @@ Supports RethinkDB 2.x
 Locally build and run:
 
 ```
-    $ git clone https://github.com/oliver006/rethinkdb_exporter.git
+    $ git clone https://github.com/nlnwa/rethinkdb_exporter.git
     $ cd rethinkdb_exporter
     $ go build
     $ ./rethinkdb_exporter <flags>
@@ -18,8 +17,8 @@ Locally build and run:
 Or via docker:
 
 ```
-    $ docker pull oliver006/rethinkdb_exporter
-    $ docker run -d --name rethinkdb_exporter -p 9123:9123 oliver006/rethinkdb_exporter
+    $ docker pull norsknettarkiv/rethinkdb_exporter
+    $ docker run -d --name rethinkdb_exporter -p 9123:9123 norsknettarkiv/rethinkdb_exporter
 ```
 
 
@@ -33,8 +32,8 @@ Installing it is as simple as:
 $ cd helm/rethinkdb-exporter
 $ helm install \
     --name=rethinkdb-exporter-for-clustername  \
-    --set=rethinkdb_exporter.dbaddr=my-rethinkdb-server:28015  \
-    --set=rethinkdb_exporter.dbpass=mypassword  \
+    --set=rethinkdb_exporter.db.addr=my-rethinkdb-server:28015  \
+    --set=rethinkdb_exporter.db.password=mypassword  \
     --set=rethinkdb_exporter.clustername=myclustername  \
     .
 ```
