@@ -12,6 +12,7 @@ import (
 
 	r "gopkg.in/rethinkdb/rethinkdb-go.v5"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -354,7 +355,7 @@ func main() {
 	exporter := NewRethinkDBExporter(*addr, *auth, *user, *pass, *clusterName, *namespace)
 	prometheus.MustRegister(exporter)
 
-	http.Handle(*metricPath, prometheus.Handler())
+	http.Handle(*metricPath, promhttp.Handler())
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`<html>
 <head><title>RethinkDB exporter</title></head>
